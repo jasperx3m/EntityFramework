@@ -5,6 +5,7 @@ using Xunit;
 using System.Collections;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
 
 namespace QuickReach.ECommerce.Infra.Data.Tests
 {
@@ -226,8 +227,15 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
         [Fact]
         public void Delete_WithValidID_ShouldRemoveRecord()
         {
+            var connectionBuilder = new SqliteConnectionStringBuilder()
+            {
+                DataSource = ":memory:"
+            };
+
+            var connection = new SqliteConnection(connectionBuilder.ConnectionString);
+
             var options = new DbContextOptionsBuilder<ECommerceDbContext>()
-                    .UseInMemoryDatabase($"CategoryForTesting{Guid.NewGuid()}")
+                    .UseSqlite(connection)
                     .Options;
             var expected = new Category
             {
@@ -236,6 +244,8 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             };
             using (var context = new ECommerceDbContext(options))
             {
+                context.Database.OpenConnection();
+                context.Database.EnsureCreated();
                 context.Categories.Add(expected);
                 context.SaveChanges();
             }
