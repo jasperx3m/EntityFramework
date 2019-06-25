@@ -4,6 +4,7 @@ using System;
 using Xunit;
 using System.Collections;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuickReach.ECommerce.Infra.Data.Tests
 {
@@ -12,31 +13,88 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
         [Fact]
         public void Create_WithValidEntity_ShouldCreateDatabaseRecord()
         {
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new CategoryRepository(context);
-            var category = new Category
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                   .UseInMemoryDatabase($"CategoryForTesting{Guid.NewGuid()}")
+                   .Options;
+            var expected = new Category
             {
                 Name = "Shoes",
                 Description = "Shoes Department"
             };
 
-            //Act
-            sut.Create(category);
+           
 
-            //Assert
-            Assert.True(category.ID != 0);
+            using (var context = new ECommerceDbContext(options))
+            {
+                var sut = new CategoryRepository(context);
 
-            var entity = sut.Retrieve(category.ID);
-            Assert.NotNull(entity);
+                // Act
+                var actual = sut.Create(expected);
 
-            //Cleanup
-            sut.Delete(category.ID);
+                // Assert
+                Assert.NotNull(actual);
+                Assert.Equal(expected.Name, actual.Name);
+                Assert.Equal(expected.Description, actual.Description);
 
+            }
+            /*
+       //Arrange
+       var context = new ECommerceDbContext();
+       var sut = new CategoryRepository(context);
+       var category = new Category
+       {
+           Name = "Shoes",
+           Description = "Shoes Department"
+       };
+
+       //Act
+       sut.Create(category);
+
+       //Assert
+       Assert.True(category.ID != 0);
+
+       var entity = sut.Retrieve(category.ID);
+       Assert.NotNull(entity);
+
+       //Cleanup
+       sut.Delete(category.ID);
+       */
         }
+
+
         [Fact]
         public void Retrieve_WithValidEntityID_ReturnsAValidEntity()
         {
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                   .UseInMemoryDatabase($"CategoryForTesting{Guid.NewGuid()}")
+                   .Options;
+            var expected = new Category
+            {
+                Name = "Shoes",
+                Description = "Shoes Department"
+            };
+
+            using (var context = new ECommerceDbContext(options))
+            {
+                context.Categories.Add(expected);
+                context.SaveChanges();
+
+            }
+
+            using (var context = new ECommerceDbContext(options))
+            {
+                var sut = new CategoryRepository(context);
+
+                // Act
+                var actual = sut.Retrieve(expected.ID);
+
+                // Assert
+                Assert.NotNull(actual);
+                Assert.Equal(expected.Name, actual.Name);
+                Assert.Equal(expected.Description, actual.Description);
+
+            }
+            /*
             //Arrange
             var context = new ECommerceDbContext();
             var category = new Category
@@ -53,10 +111,41 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             Assert.NotNull(actual);
             //Cleanup
             sut.Delete(actual.ID);
+            */
         }
         [Fact]
         public void Retrieve_WithNonExistingEntityID_ReturnsNull()
         {
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                   .UseInMemoryDatabase($"CategoryForTesting{Guid.NewGuid()}")
+                   .Options;
+            var expected = new Category
+            {
+                Name = "Shoes",
+                Description = "Shoes Department"
+            };
+
+            using (var context = new ECommerceDbContext(options))
+            {
+                context.Categories.Add(expected);
+                context.SaveChanges();
+                context.Categories.Remove(expected);
+                context.SaveChanges();
+            }
+
+            using (var context = new ECommerceDbContext(options))
+            {
+                var sut = new CategoryRepository(context);
+
+                // Act
+                var actual = sut.Retrieve(expected.ID);
+
+                // Assert
+                Assert.Null(actual);
+               
+
+            }
+            /*
             //Arrange
             var context = new ECommerceDbContext();
             var sut = new CategoryRepository(context);
@@ -65,11 +154,43 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             var actual = sut.Retrieve(-1);
             //Assert
             Assert.Null(actual);
+            */
         }
 
         [Fact]
         public void Retrieve_WithSkipAndCount_ReturnsTheCorrectPage()
         {
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                   .UseInMemoryDatabase($"CategoryForTesting{Guid.NewGuid()}")
+                   .Options;
+           
+
+            using (var context = new ECommerceDbContext(options))
+            {
+                for(int i=1;i<20;i+=1)
+                {
+                    context.Categories.Add(new Category
+                    {
+                        Name = string.Format("Category {0}", i),
+                        Description = string.Format("Description {0}", i)
+                    });
+                }
+                context.SaveChanges();
+            }
+
+            using (var context = new ECommerceDbContext(options))
+            {
+                var sut = new CategoryRepository(context);
+
+                // Act
+                var actual = sut.Retrieve(4,5);
+
+                // Assert
+                Assert.True(actual.Count() == 5);
+                
+
+            }
+            /*
             //Arrange
             var context = new ECommerceDbContext();
             var sut = new CategoryRepository(context);
@@ -91,11 +212,40 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             //Cleanup
             list = sut.Retrieve(0, Int32.MaxValue);
             list.All(c => { sut.Delete(c.ID); return true; });
+            */
         }
         
         [Fact]
         public void Delete_WithValidID_ShouldRemoveRecord()
         {
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                    .UseInMemoryDatabase($"CategoryForTesting{Guid.NewGuid()}")
+                    .Options;
+            var expected = new Category
+            {
+                Name = "Shoes",
+                Description = "Shoes Department"
+            };
+            using (var context = new ECommerceDbContext(options))
+            {
+                context.Categories.Add(expected);
+                context.SaveChanges();
+            }
+
+            using (var context = new ECommerceDbContext(options))
+            {
+                var sut = new CategoryRepository(context);
+
+                // Act
+                sut.Delete(expected.ID);
+
+                // Assert
+                var actual = context.Suppliers.Find(expected.ID);
+                Assert.Null(actual);
+
+
+            }
+            /*
             //Arrange
             var context = new ECommerceDbContext();
             var sut = new CategoryRepository(context);
@@ -114,11 +264,13 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             //Assert
             actual = sut.Retrieve(category.ID);
             Assert.Null(actual);
+            */
         }
 
         [Fact]
         public void Update_WithValidProperty_ShouldUpdateEntity()
         {
+            /*
             //Arrange
             var context = new ECommerceDbContext();
             var sut = new CategoryRepository(context);
@@ -144,6 +296,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
 
             //Cleanup
             sut.Delete(expected.ID);
+            */
         }
     }
 }
