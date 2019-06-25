@@ -52,25 +52,27 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 Assert.Equal(expected.Description, actual.Description);
                 Assert.Equal(expected.IsActive, actual.IsActive);
             }
+            #region oldcreateversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new SupplierRepository(context);
-            var supplier = new Supplier
-            {
-                Name = "Blast Asia",
-                Description = "Software Supplier",
-                IsActive = true
-            };
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new SupplierRepository(context);
+                var supplier = new Supplier
+                {
+                    Name = "Blast Asia",
+                    Description = "Software Supplier",
+                    IsActive = true
+                };
 
 
-            //Act
-            sut.Create(supplier);
-            //Assert
-            Assert.True(supplier.ID != 0);
-            //Cleanup
-            sut.Delete(supplier.ID);
-            */
+                //Act
+                sut.Create(supplier);
+                //Assert
+                Assert.True(supplier.ID != 0);
+                //Cleanup
+                sut.Delete(supplier.ID);
+                */ 
+            #endregion
         }
         [Fact]
         public void Retrieve_WithValidID_ReturnsValidEntity()
@@ -113,27 +115,29 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 Assert.Equal(expected.Description, actual.Description);
                 Assert.Equal(expected.IsActive, actual.IsActive);
             }
+            #region oldretrieveversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new SupplierRepository(context);
-            var supplier = new Supplier
-            {
-                Name = "Blast Asia",
-                Description = "Software Supplier",
-                IsActive = true
-            };
-            sut.Create(supplier);
-            //Act
-            var actual = sut.Retrieve(supplier.ID);
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new SupplierRepository(context);
+                var supplier = new Supplier
+                {
+                    Name = "Blast Asia",
+                    Description = "Software Supplier",
+                    IsActive = true
+                };
+                sut.Create(supplier);
+                //Act
+                var actual = sut.Retrieve(supplier.ID);
 
-            //Assert
-            Assert.NotNull(actual);
-            Assert.True(actual.Equals(supplier));
+                //Assert
+                Assert.NotNull(actual);
+                Assert.True(actual.Equals(supplier));
 
-            //Cleanup
-            sut.Delete(supplier.ID);
-            */
+                //Cleanup
+                sut.Delete(supplier.ID);
+                */ 
+            #endregion
         }
         [Fact]
         public void Delete_WithValidID_ShouldRemoveEntity()
@@ -175,26 +179,28 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 var actual = context.Suppliers.Find(expected.ID);
                 Assert.Null(actual);
             }
-            
-            /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new SupplierRepository(context);
-            var supplier = new Supplier
-            {
-                Name = "Blast Asia",
-                Description = "Software Supplier",
-                IsActive = true
-            };
-            sut.Create(supplier);
-            Assert.True(supplier.ID != 0);
-            //Act
-            sut.Delete(supplier.ID);
 
-            //Assert
-            var actual = sut.Retrieve(supplier.ID);
-            Assert.Null(actual);
-            */
+            #region oldretrievenullversion
+            /*
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new SupplierRepository(context);
+                var supplier = new Supplier
+                {
+                    Name = "Blast Asia",
+                    Description = "Software Supplier",
+                    IsActive = true
+                };
+                sut.Create(supplier);
+                Assert.True(supplier.ID != 0);
+                //Act
+                sut.Delete(supplier.ID);
+
+                //Assert
+                var actual = sut.Retrieve(supplier.ID);
+                Assert.Null(actual);
+                */ 
+            #endregion
         }
         [Fact]
         public void Retrive_WithNonExistingID_ShouldReturnsNull()
@@ -234,25 +240,27 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 //Assert
                 Assert.Null(actual);
             }
+            #region retrievenullversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new SupplierRepository(context);
-            var supplier = new Supplier
-            {
-                Name = "Blast Asia",
-                Description = "Software Description",
-                IsActive = true
-            };
-            sut.Create(supplier);
-            Assert.True(supplier.ID != 0);
-            sut.Delete(supplier.ID);
-            //Act
-            var actual = sut.Retrieve(supplier.ID);
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new SupplierRepository(context);
+                var supplier = new Supplier
+                {
+                    Name = "Blast Asia",
+                    Description = "Software Description",
+                    IsActive = true
+                };
+                sut.Create(supplier);
+                Assert.True(supplier.ID != 0);
+                sut.Delete(supplier.ID);
+                //Act
+                var actual = sut.Retrieve(supplier.ID);
 
-            //Assert
-            Assert.Null(actual);
-            */
+                //Assert
+                Assert.Null(actual);
+                */ 
+            #endregion
         }
         [Fact]
         public void Retrieve_WithSkipAndCount_ReturnsTheCorrectPage()
@@ -295,30 +303,32 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 //Assert
                 Assert.True(actual.Count() == 5);
             }
+            #region oldretrievepageversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new SupplierRepository(context);
-            for (int i=0; i <20; i+=1)
-            {
-                sut.Create(new Supplier
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new SupplierRepository(context);
+                for (int i=0; i <20; i+=1)
                 {
-                    Name = string.Format("Supplier No. {0}", i),
-                    Description = string.Format("Description No. {0}", i),
-                    IsActive = true
-                });
-            }
-            //Act
-            var actual = sut.Retrieve(4, 3);
-            //Assert
-            Assert.True(actual.Count() == 3);
-            //Cleanup
-            var list = sut.Retrieve(0, Int32.MaxValue);
-            foreach (var item in list)
-            {
-                sut.Delete(item.ID);
-            }
-            */
+                    sut.Create(new Supplier
+                    {
+                        Name = string.Format("Supplier No. {0}", i),
+                        Description = string.Format("Description No. {0}", i),
+                        IsActive = true
+                    });
+                }
+                //Act
+                var actual = sut.Retrieve(4, 3);
+                //Assert
+                Assert.True(actual.Count() == 3);
+                //Cleanup
+                var list = sut.Retrieve(0, Int32.MaxValue);
+                foreach (var item in list)
+                {
+                    sut.Delete(item.ID);
+                }
+                */ 
+            #endregion
         }
         
         [Fact]
@@ -363,31 +373,33 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 var actual = context.Suppliers.Find(expected.ID);
                 Assert.Equal(expected, actual);
             }
+            #region oldupdateversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new SupplierRepository(context);
-            var supplier = new Supplier
-            {
-                Name = "Blast Asia",
-                Description = "Software Supplier",
-                IsActive = true
-            };
-            sut.Create(supplier);
-            var expected =sut.Retrieve(supplier.ID);
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new SupplierRepository(context);
+                var supplier = new Supplier
+                {
+                    Name = "Blast Asia",
+                    Description = "Software Supplier",
+                    IsActive = true
+                };
+                sut.Create(supplier);
+                var expected =sut.Retrieve(supplier.ID);
 
-            //Act
-            expected.Name = "Asus";
-            expected.Description="Laptop Supplier";
-            sut.Update(supplier.ID, expected);
-            var actual = sut.Retrieve(supplier.ID);
+                //Act
+                expected.Name = "Asus";
+                expected.Description="Laptop Supplier";
+                sut.Update(supplier.ID, expected);
+                var actual = sut.Retrieve(supplier.ID);
 
-            //Assert
-            Assert.Equal(actual, expected);
+                //Assert
+                Assert.Equal(actual, expected);
 
-            //Cleanup
-            sut.Delete(supplier.ID);
-            */
+                //Cleanup
+                sut.Delete(supplier.ID);
+                */ 
+            #endregion
         }
     }
 }

@@ -37,28 +37,30 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 Assert.Equal(expected.Description, actual.Description);
 
             }
+            #region oldcreateversion
             /*
-       //Arrange
-       var context = new ECommerceDbContext();
-       var sut = new CategoryRepository(context);
-       var category = new Category
-       {
-           Name = "Shoes",
-           Description = "Shoes Department"
-       };
+           //Arrange
+           var context = new ECommerceDbContext();
+           var sut = new CategoryRepository(context);
+           var category = new Category
+           {
+               Name = "Shoes",
+               Description = "Shoes Department"
+           };
 
-       //Act
-       sut.Create(category);
+           //Act
+           sut.Create(category);
 
-       //Assert
-       Assert.True(category.ID != 0);
+           //Assert
+           Assert.True(category.ID != 0);
 
-       var entity = sut.Retrieve(category.ID);
-       Assert.NotNull(entity);
+           var entity = sut.Retrieve(category.ID);
+           Assert.NotNull(entity);
 
-       //Cleanup
-       sut.Delete(category.ID);
-       */
+           //Cleanup
+           sut.Delete(category.ID);
+           */ 
+            #endregion
         }
 
 
@@ -94,24 +96,26 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 Assert.Equal(expected.Description, actual.Description);
 
             }
+            #region oldretrieveversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var category = new Category
-            {
-                Name = "Shoes",
-                Description = "Shoes Department"
-            };
-            var sut = new CategoryRepository(context);
-            sut.Create(category);
+                //Arrange
+                var context = new ECommerceDbContext();
+                var category = new Category
+                {
+                    Name = "Shoes",
+                    Description = "Shoes Department"
+                };
+                var sut = new CategoryRepository(context);
+                sut.Create(category);
 
-            //Act
-            var actual = sut.Retrieve(category.ID);
-            //Assert
-            Assert.NotNull(actual);
-            //Cleanup
-            sut.Delete(actual.ID);
-            */
+                //Act
+                var actual = sut.Retrieve(category.ID);
+                //Assert
+                Assert.NotNull(actual);
+                //Cleanup
+                sut.Delete(actual.ID);
+                */ 
+            #endregion
         }
         [Fact]
         public void Retrieve_WithNonExistingEntityID_ReturnsNull()
@@ -145,16 +149,18 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                
 
             }
+            #region oldretrievenullversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new CategoryRepository(context);
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new CategoryRepository(context);
 
-            //Act
-            var actual = sut.Retrieve(-1);
-            //Assert
-            Assert.Null(actual);
-            */
+                //Act
+                var actual = sut.Retrieve(-1);
+                //Assert
+                Assert.Null(actual);
+                */ 
+            #endregion
         }
 
         [Fact]
@@ -190,29 +196,31 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 
 
             }
+            #region oldretrievepageversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new CategoryRepository(context);
-            for (var i = 1; i < 20; i += 1)
-            {
-                sut.Create(new Category
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new CategoryRepository(context);
+                for (var i = 1; i < 20; i += 1)
                 {
-                    Name = string.Format("Category {0}", i),
-                    Description = string.Format("Description {0}", i)
-                });
-            }
+                    sut.Create(new Category
+                    {
+                        Name = string.Format("Category {0}", i),
+                        Description = string.Format("Description {0}", i)
+                    });
+                }
 
-            //Act
-            var list = sut.Retrieve(5, 5);
+                //Act
+                var list = sut.Retrieve(5, 5);
 
-            //Assert
-            Assert.True(list.Count() == 5);
+                //Assert
+                Assert.True(list.Count() == 5);
 
-            //Cleanup
-            list = sut.Retrieve(0, Int32.MaxValue);
-            list.All(c => { sut.Delete(c.ID); return true; });
-            */
+                //Cleanup
+                list = sut.Retrieve(0, Int32.MaxValue);
+                list.All(c => { sut.Delete(c.ID); return true; });
+                */ 
+            #endregion
         }
         
         [Fact]
@@ -240,63 +248,99 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 sut.Delete(expected.ID);
 
                 // Assert
-                var actual = context.Suppliers.Find(expected.ID);
+                var actual = context.Categories.Find(expected.ID);
                 Assert.Null(actual);
 
 
             }
+            #region olddeleteversion
             /*
-            //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new CategoryRepository(context);
-            var category = new Category
-            {
-                Name = "Shoes",
-                Description = "Shoes Department",
-                IsActive = true
-            };
+               //Arrange
+               var context = new ECommerceDbContext();
+               var sut = new CategoryRepository(context);
+               var category = new Category
+               {
+                   Name = "Shoes",
+                   Description = "Shoes Department",
+                   IsActive = true
+               };
 
-            sut.Create(category);
-            var actual=sut.Retrieve(category.ID);
-            Assert.NotNull(actual);
-            //Act
-            sut.Delete(category.ID);
-            //Assert
-            actual = sut.Retrieve(category.ID);
-            Assert.Null(actual);
-            */
+               sut.Create(category);
+               var actual=sut.Retrieve(category.ID);
+               Assert.NotNull(actual);
+               //Act
+               sut.Delete(category.ID);
+               //Assert
+               actual = sut.Retrieve(category.ID);
+               Assert.Null(actual);
+               */ 
+            #endregion
         }
 
         [Fact]
         public void Update_WithValidProperty_ShouldUpdateEntity()
         {
-            /*
             //Arrange
-            var context = new ECommerceDbContext();
-            var sut = new CategoryRepository(context);
-            var oldCategory = new Category
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                    .UseInMemoryDatabase($"CategoryForTesting{Guid.NewGuid()}")
+                    .Options;
+
+
+            var expected = new Category
             {
                 Name = "Shoes",
-                Description = "Shoes Department",
-                IsActive = true
+                Description = "Shoes Department"
             };
-            sut.Create(oldCategory);
-            
+            using (var context = new ECommerceDbContext(options))
+            {
+                context.Database.OpenConnection();
+                context.Database.EnsureCreated();
 
-            var retrieve = sut.Retrieve(oldCategory.ID);
-            retrieve.Name = "Pants";
-            retrieve.Description = "Pants Department";
+                context.Categories.Add(expected);
+                context.SaveChanges();
+            }
+            expected.Name = "Slippers";
+            expected.Description = "Slippers Department";
+            using (var context = new ECommerceDbContext(options))
+            {
+                var sut = new CategoryRepository(context);
 
-            //Act
-            sut.Update(retrieve.ID, retrieve);
+                //Act 
+                sut.Update(expected.ID, expected);
 
-            //Assert
-            var expected = sut.Retrieve(retrieve.ID);
-            Assert.True(retrieve.Equals(expected));
+                //Assert
+                var actual = context.Categories.Find(expected.ID);
+                Assert.Equal(expected, actual);
+            }
+            #region newupdateversion
+            /*
+                //Arrange
+                var context = new ECommerceDbContext();
+                var sut = new CategoryRepository(context);
+                var oldCategory = new Category
+                {
+                    Name = "Shoes",
+                    Description = "Shoes Department",
+                    IsActive = true
+                };
+                sut.Create(oldCategory);
 
-            //Cleanup
-            sut.Delete(expected.ID);
-            */
+
+                var retrieve = sut.Retrieve(oldCategory.ID);
+                retrieve.Name = "Pants";
+                retrieve.Description = "Pants Department";
+
+                //Act
+                sut.Update(retrieve.ID, retrieve);
+
+                //Assert
+                var expected = sut.Retrieve(retrieve.ID);
+                Assert.True(retrieve.Equals(expected));
+
+                //Cleanup
+                sut.Delete(expected.ID);
+                */ 
+            #endregion
         }
     }
 }
