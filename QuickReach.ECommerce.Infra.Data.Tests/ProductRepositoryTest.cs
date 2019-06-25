@@ -35,6 +35,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             };
             //Act
             sut.Create(product);
+            Assert.True(product.ID != 0);
             var actual = sut.Retrieve(product.ID);
 
             //Assert
@@ -70,6 +71,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             };
 
             sut.Create(product);
+            Assert.True(product.ID != 0);
 
             //Act
             var actual = sut.Retrieve(product.ID);
@@ -106,6 +108,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             };
 
             sut.Create(product);
+            Assert.True(product.ID != 0);
             var actual = sut.Retrieve(product.ID);
             sut.Delete(actual.ID);
 
@@ -203,7 +206,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
         }
         
         [Fact]
-        public void Update_WithValidProperty_ShouldUpdateEntity()
+        public void Update_WithValidProperty_ShouldUpdateRecord()
         {
             //Arrange
             var context = new ECommerceDbContext();
