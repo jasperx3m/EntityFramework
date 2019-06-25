@@ -38,21 +38,89 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             var actual = sut.Retrieve(product.ID);
 
             //Assert
-            Assert.NotNull(actual.ID);
+            Assert.NotNull(actual);
 
             //Cleanup
-            var list = sut.Retrieve(0, Int32.MaxValue);
-            foreach (var item in list)
-            {
-                sut.Delete(item.ID);
-            }
-            var catlist = cat.Retrieve(0, Int32.MaxValue);
-            foreach (var item in catlist)
-            {
-                cat.Delete(item.ID);
-            }
+            sut.Delete(actual.ID);
+            cat.Delete(fillerCategory.ID);
         }
+
+        [Fact]
         public void Retrieve_WithValidID_ReturnsValidEntity()
+        {
+            //Arrange
+            var context = new ECommerceDbContext();
+            var cat = new CategoryRepository(context);
+            var category = new Category
+            {
+                Name = "Shoe",
+                Description = "Shoe Department"
+            };
+            cat.Create(category);
+            var fillerCategory = cat.Retrieve(category.ID);
+
+            var sut = new ProductRepository(context);
+            var product = new Product
+            {
+                Name = "Nike",
+                Description = "Airmax",
+                Price = 3000,
+                Category = fillerCategory,
+                ImageUrl = "picture"
+            };
+
+            sut.Create(product);
+
+            //Act
+            var actual = sut.Retrieve(product.ID);
+            //Assert
+            Assert.NotNull(actual);
+            //Cleanup
+            sut.Delete(actual.ID);
+            cat.Delete(category.ID);
+            
+        }
+        
+        [Fact]
+        public void Retrieve_WithNonExistingID_ReturnsNull()
+        {
+            //Arrange
+            var context = new ECommerceDbContext();
+            var cat = new CategoryRepository(context);
+            var category = new Category
+            {
+                Name = "Shoe",
+                Description = "Shoe Department"
+            };
+            cat.Create(category);
+            var fillerCategory = cat.Retrieve(category.ID);
+
+            var sut = new ProductRepository(context);
+            var product = new Product
+            {
+                Name = "Nike",
+                Description = "Airmax",
+                Price = 3000,
+                Category = fillerCategory,
+                ImageUrl = "picture"
+            };
+
+            sut.Create(product);
+            var actual = sut.Retrieve(product.ID);
+            sut.Delete(actual.ID);
+
+
+            //Act
+            actual = sut.Retrieve(actual.ID);
+            //Assert
+            Assert.Null(actual);
+            //Cleanup
+            cat.Delete(category.ID);
+
+            
+        }
+        [Fact]
+        public void Retrieve_WithSkipAndCount_ReturnsTheCorrectPage()
         {
             //Arrange
             var context = new ECommerceDbContext();
@@ -72,9 +140,9 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 {
                     Name = string.Format("Category {0}", i),
                     Description = string.Format("Description {0}", i),
-                    Price= 3000+i,
-                    Category=fillerCategory,
-                    ImageUrl=string.Format("Image {0}",i)
+                    Price = 3000 + i,
+                    Category = fillerCategory,
+                    ImageUrl = string.Format("Image {0}", i)
                 });
             }
 
@@ -95,26 +163,85 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 cat.Delete(item.ID);
             }
         }
-        public void Retrieve_WithNonExistingID_ReturnsNull()
-        {
-            //Arrange
-            //Act
-            //Assert
-            //Cleanup
-        }
-        public void Retrieve_WithSkipAndCount_ReturnsTheCorrectPage()
-        {
-            //Arrange
-            //Act
-            //Assert
-            //Cleanup
-        }
+        [Fact]
+
         public void Delete_WithValidID_ShouldDeleteRecord()
         {
             //Arrange
+            var context = new ECommerceDbContext();
+            var cat = new CategoryRepository(context);
+            var category = new Category
+            {
+                Name = "Shoe",
+                Description = "Shoe Department"
+            };
+            cat.Create(category);
+            var fillerCategory = cat.Retrieve(category.ID);
+
+            var sut = new ProductRepository(context);
+            var product = new Product
+            {
+                Name = "Nike",
+                Description = "Airmax",
+                Price = 3000,
+                Category = fillerCategory,
+                ImageUrl = "picture"
+            };
+
+            sut.Create(product);
+            var actual = sut.Retrieve(product.ID);
+            Assert.NotNull(actual);
+
             //Act
+            sut.Delete(product.ID);
             //Assert
+            actual = sut.Retrieve(product.ID);
+            Assert.Null(actual);
             //Cleanup
+            cat.Delete(category.ID);
+            
+        }
+        
+        [Fact]
+        public void Update_WithValidProperty_ShouldUpdateEntity()
+        {
+            //Arrange
+            var context = new ECommerceDbContext();
+            var cat = new CategoryRepository(context);
+            var category = new Category
+            {
+                Name = "Shoe",
+                Description = "Shoe Department"
+            };
+            cat.Create(category);
+            var fillerCategory = cat.Retrieve(category.ID);
+
+            var sut = new ProductRepository(context);
+            var product = new Product
+            {
+                Name = "Nike",
+                Description = "Airmax",
+                Price = 3000,
+                Category = fillerCategory,
+                ImageUrl = "picture"
+            };
+
+            sut.Create(product);
+            var expected = sut.Retrieve(product.ID);
+            Assert.NotNull(expected);
+
+            //Act
+            expected.Name = "Adidas";
+            expected.Description = "Tubular";
+            sut.Update(product.ID, expected);
+
+            //Assert
+            var actual = sut.Retrieve(product.ID);
+            Assert.True(actual.Equals(expected));
+
+            //Cleanup
+            sut.Delete(expected.ID);
+            cat.Delete(category.ID);
         }
 
     }

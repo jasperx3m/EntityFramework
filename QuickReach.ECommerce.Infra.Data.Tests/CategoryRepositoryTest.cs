@@ -117,7 +117,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
         }
 
         [Fact]
-        public void Update_WithValidProperty_ShouldUpdate()
+        public void Update_WithValidProperty_ShouldUpdateEntity()
         {
             //Arrange
             var context = new ECommerceDbContext();
@@ -143,11 +143,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             Assert.True(retrieve.Equals(expected));
 
             //Cleanup
-            var list = sut.Retrieve(0, Int32.MaxValue);
-            foreach (var item in list)
-            {
-                sut.Delete(item.ID);
-            }
+            sut.Delete(expected.ID);
         }
     }
 }

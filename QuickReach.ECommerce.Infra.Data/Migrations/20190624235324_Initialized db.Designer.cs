@@ -9,8 +9,8 @@ using QuickReach.ECommerce.Infra.Data;
 namespace QuickReach.ECommerce.Infra.Data.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20190624063933_Add IsActive to Product")]
-    partial class AddIsActivetoProduct
+    [Migration("20190624235324_Initialized db")]
+    partial class Initializeddb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,6 +69,27 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                     b.HasIndex("CategoryID");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.Supplier", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Supplier");
                 });
 
             modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.Product", b =>
