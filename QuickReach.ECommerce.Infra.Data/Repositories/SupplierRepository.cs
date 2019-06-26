@@ -5,7 +5,7 @@ using System.Text;
 
 namespace QuickReach.ECommerce.Infra.Data.Repositories
 {
-    public class SupplierRepository : RepositoryBase<Supplier>, IRepository<Supplier>
+    public class SupplierRepository : RepositoryBase<Supplier>
     {
         public SupplierRepository(ECommerceDbContext context) : base(context)
         {
