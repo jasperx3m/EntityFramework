@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using QuickReach.ECommerce.Infra.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuickReach.ECommerce.Infra.Data.Repository
 {
@@ -15,7 +16,13 @@ namespace QuickReach.ECommerce.Infra.Data.Repository
         {
 
         }
-
+        public override Category Retrieve(int entityId)
+        {
+            var entity = this.context.Categories.Include(c => c.Products)
+                .Where(c => c.ID == entityId)
+                .FirstOrDefault();
+            return entity;
+        }
         public IEnumerable<Category> Retrieve(string search = "", int skip = 0, int count = 10)
         {
             var result = this.context.Categories

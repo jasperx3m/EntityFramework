@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using QuickReach.ECommerce.Domain;
 using QuickReach.ECommerce.Domain.Models;
 using QuickReach.ECommerce.Infra.Data;
@@ -32,9 +33,9 @@ namespace QuickReach.ECommerce.API
         {
             services.AddDbContext<ECommerceDbContext>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-            
+            services.AddTransient<IProductRepository, ProductRepository>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         
         }
 
