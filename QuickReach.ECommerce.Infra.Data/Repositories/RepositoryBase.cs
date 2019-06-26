@@ -52,3 +52,4 @@ namespace QuickReach.ECommerce.Infra.Data.Repositories
         }
     }
 }
+//
