@@ -15,7 +15,7 @@ namespace QuickReach.ECommerce.Infra.Data.Repositories
         {
             this.context = context;
         }
-        public TEntity Create(TEntity newEntity)
+        public virtual TEntity Create(TEntity newEntity)
         {
             this.context.Set<TEntity>()
                         .Add(newEntity);
@@ -23,7 +23,7 @@ namespace QuickReach.ECommerce.Infra.Data.Repositories
             return newEntity;
         }
 
-        public void Delete(int entityId)
+        public virtual void Delete(int entityId)
         {
             var entityToRemove = Retrieve(entityId);
             this.context.Remove<TEntity>(entityToRemove);

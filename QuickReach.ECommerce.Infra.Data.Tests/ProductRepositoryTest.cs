@@ -36,7 +36,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             {
                 Name = "Tubular",
                 Description = "Adidas Shoe",
-                Category = category,
+                CategoryID = category.ID,
                 ImageUrl="image.com",
                 Price=3000
             };
@@ -45,6 +45,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 context.Database.OpenConnection();
                 context.Database.EnsureCreated();
                 context.Categories.Add(category);
+                context.SaveChanges();
                 var sut = new ProductRepository(context);
 
                 //Act
@@ -52,7 +53,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             }
             using (var context = new ECommerceDbContext(options))
             {
-                var actual = context.Products.Find(expected.ID);
+                var actual = context.Products.Find(expected);
                 //Assert
                 Assert.NotNull(actual);
                 Assert.Equal(expected.Name, actual.Name);
@@ -94,6 +95,42 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                cat.Delete(fillerCategory.ID);
                */ 
             #endregion
+        }
+        [Fact]
+        public void Create_WithNonExistingCategory_ReturnsException()
+        {
+            //Assert
+            //Arrange
+            var connectionBuilder = new SqliteConnectionStringBuilder()
+            {
+                DataSource = ":memory:"
+            };
+
+            var connection = new SqliteConnection(connectionBuilder.ConnectionString);
+
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                    .UseSqlite(connection)
+                    .Options;
+            
+            var product = new Product
+            {
+                Name = "Tubular",
+                Description = "Adidas Shoe",
+                CategoryID = 12,
+                ImageUrl = "image.com",
+                Price = 3000
+            };
+            using (var context= new ECommerceDbContext(options))
+            {
+                context.Database.OpenConnection();
+                context.Database.EnsureCreated();
+            }
+            using (var context = new ECommerceDbContext(options))
+            {
+                var sut = new ProductRepository(context);
+                //Act //Assert
+                Assert.Throws<Exception>(()=> sut.Create(product));
+            }
         }
 
         [Fact]

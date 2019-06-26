@@ -23,6 +23,20 @@ namespace QuickReach.ECommerce.Infra.Data.Repository
                 .FirstOrDefault();
             return entity;
         }
+        public override void Delete(int entityId)
+        {
+            var entityToRemove = Retrieve(entityId);
+            var hasProduct = this.context.Products.Where(p => p.ID == entityToRemove.ID);
+            if (hasProduct != null)
+            {
+                throw new System.Exception("This Category has Product/s attached");
+            }
+            else
+            {
+                this.context.Categories.Remove(entityToRemove);
+                this.context.SaveChanges();
+            }
+        }
         public IEnumerable<Category> Retrieve(string search = "", int skip = 0, int count = 10)
         {
             var result = this.context.Categories

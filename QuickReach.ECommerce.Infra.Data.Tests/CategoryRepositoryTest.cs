@@ -6,6 +6,7 @@ using System.Collections;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using QuickReach.ECommerce.Infra.Data.Repository;
 
 namespace QuickReach.ECommerce.Infra.Data.Tests
 {
@@ -164,6 +165,8 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             #endregion
         }
 
+         
+
         [Fact]
         public void Retrieve_WithSkipAndCount_ReturnsTheCorrectPage()
         {
@@ -285,6 +288,54 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                Assert.Null(actual);
                */ 
             #endregion
+        }
+        [Fact]
+        public void Delete_WithExistingProducts_ShouldReturnException()
+        {
+            //Arrange
+            var connectionBuilder = new SqliteConnectionStringBuilder()
+            {
+                DataSource = ":memory:"
+            };
+
+            var connection = new SqliteConnection(connectionBuilder.ConnectionString);
+
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                    .UseSqlite(connection)
+                    .Options;
+            var category = new Category
+            {
+                Name = "Shoes",
+                Description = "Shoes Department"
+            };
+            var product = new Product
+            {
+                Name = "Adidas Tubular",
+                Description = "Adidas Shoe",
+                ImageUrl="adidas.com",
+                Category=category,
+                Price=4000,
+                IsActive = true
+            };
+            using (var context = new ECommerceDbContext(options))
+            {
+                context.Database.OpenConnection();
+                context.Database.EnsureCreated();
+
+                context.Categories.Add(category);
+                context.Products.Add(product);
+                context.SaveChanges();
+            }
+            using (var context = new ECommerceDbContext(options))
+            {
+                var sut = new CategoryRepository(context);
+
+                
+                //Act // Assert
+                Assert.Throws<Exception>(() => sut.Delete(category.ID));
+
+
+            }
         }
 
         [Fact]
