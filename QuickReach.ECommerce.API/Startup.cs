@@ -34,6 +34,7 @@ namespace QuickReach.ECommerce.API
             services.AddDbContext<ECommerceDbContext>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         
