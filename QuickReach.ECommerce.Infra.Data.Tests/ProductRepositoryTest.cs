@@ -100,7 +100,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             #endregion
         }
         [Fact]
-        public void Create_WithNonExistingCategory_ReturnsException()
+        public void Create_WithNonExistingCategory_ShouldThrowsException()
         {
             //Assert
             //Arrange
@@ -132,7 +132,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             {
                 var sut = new ProductRepository(context);
                 //Act //Assert
-                Assert.Throws<Exception>(()=> sut.Create(product));
+                Assert.Throws<DbUpdateException>(()=> sut.Create(product));
             }
         }
 

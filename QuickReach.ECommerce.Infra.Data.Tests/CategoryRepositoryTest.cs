@@ -290,7 +290,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             #endregion
         }
         [Fact]
-        public void Delete_WithExistingProducts_ShouldReturnException()
+        public void Delete_WithExistingProducts_ShouldThrowsException()
         {
             //Arrange
             var connectionBuilder = new SqliteConnectionStringBuilder()
@@ -308,21 +308,26 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 Name = "Shoes",
                 Description = "Shoes Department"
             };
-            var product = new Product
-            {
-                Name = "Adidas Tubular",
-                Description = "Adidas Shoe",
-                ImageUrl="adidas.com",
-                Category=category,
-                Price=4000,
-                IsActive = true
-            };
+
             using (var context = new ECommerceDbContext(options))
             {
                 context.Database.OpenConnection();
                 context.Database.EnsureCreated();
-
                 context.Categories.Add(category);
+                context.SaveChanges();
+            }
+            var product = new Product
+            {
+                Name = "Adidas Tubular",
+                Description = "Adidas Shoe",
+                ImageUrl = "adidas.com",
+                CategoryID = category.ID,
+                Price = 4000,
+                IsActive = true
+            };
+            using (var context = new ECommerceDbContext(options))
+            {
+                
                 context.Products.Add(product);
                 context.SaveChanges();
             }
@@ -332,7 +337,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
 
                 
                 //Act // Assert
-                Assert.Throws<Exception>(() => sut.Delete(category.ID));
+                Assert.Throws<DbUpdateException>(() => sut.Delete(category.ID));
 
 
             }

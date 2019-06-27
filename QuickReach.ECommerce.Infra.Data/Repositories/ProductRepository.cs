@@ -14,24 +14,24 @@ namespace QuickReach.ECommerce.Infra.Data.Repositories
         {
 
         }
-        public override Product Create(Product newEntity)
-        {
-            var categoryIsExisting = this.context
-                .Categories.Find(newEntity.CategoryID);
-            if (categoryIsExisting==null)
-            {
-                throw new System.Exception("There is no such category"); 
-            }
-            else
-            {
-                this.context.Products
-                        .Add(newEntity);
-                this.context.SaveChanges();
-                return newEntity;
+        //public override Product Create(Product newEntity)
+        //{
+        //    var categoryIsExisting = this.context
+        //        .Categories.Find(newEntity.CategoryID);
+        //    if (categoryIsExisting==null)
+        //    {
+        //        throw new System.Exception("There is no such category"); 
+        //    }
+        //    else
+        //    {
+        //        this.context.Products
+        //                .Add(newEntity);
+        //        this.context.SaveChanges();
+        //        return newEntity;
 
-            }
+        //    }
 
-        }
+        //}
         public IEnumerable<Product> Retrieve(string search = "", int skip = 0, int count = 10)
         {
             var result = this.context.Products
