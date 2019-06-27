@@ -39,6 +39,18 @@ namespace QuickReach.ECommerce.Infra.Data.Repository
         //        //throw new System.Exception("This Category has Product/s attached");
         //    }
         //}
+        public override Category Retrieve(int entityId)
+        {
+            var entity = this.context.Categories
+                        .Include(c => c.ProductCategories)
+                        .Include(c => c.ChildCategories)
+                        .Include(c => c.ParentCategories)
+                        .Where(c => c.ID == entityId)
+                        .FirstOrDefault();
+            return entity;
+
+
+        }
         public IEnumerable<Category> Retrieve(string search = "", int skip = 0, int count = 10)
         {
             var result = this.context.Categories

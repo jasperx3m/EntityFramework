@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace QuickReach.ECommerce.Infra.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class ReinitializedDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -9,8 +9,8 @@ using QuickReach.ECommerce.Infra.Data;
 namespace QuickReach.ECommerce.Infra.Data.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20190627071818_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20190627083151_Reinitialized Database")]
+    partial class ReinitializedDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
