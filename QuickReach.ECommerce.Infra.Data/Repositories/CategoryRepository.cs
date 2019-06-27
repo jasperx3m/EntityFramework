@@ -16,13 +16,13 @@ namespace QuickReach.ECommerce.Infra.Data.Repository
         {
 
         }
-        public override Category Retrieve(int entityId)
-        {
-            var entity = this.context.Categories.Include(c => c.Products)
-                .Where(c => c.ID == entityId)
-                .FirstOrDefault();
-            return entity;
-        }
+        //public override Category Retrieve(int entityId)
+        //{
+        //    var entity = this.context.Categories.Include(c => c.Products)
+        //        .Where(c => c.ID == entityId)
+        //        .FirstOrDefault();
+        //    return entity;
+        //}
         //public override void Delete(int entityId)
         //{
         //    var entityToRemove = Retrieve(entityId);

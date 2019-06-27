@@ -132,7 +132,7 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
             modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.Product", b =>
                 {
                     b.HasOne("QuickReach.ECommerce.Domain.Models.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
