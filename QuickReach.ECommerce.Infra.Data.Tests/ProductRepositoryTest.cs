@@ -27,33 +27,36 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             var options = new DbContextOptionsBuilder<ECommerceDbContext>()
                     .UseSqlite(connection)
                     .Options;
+
             var category = new Category
             {
                 Name = "Shoe",
                 Description = "Shoe Department"
             };
-            var expected = new Product
-            {
-                Name = "Tubular",
-                Description = "Adidas Shoe",
-                CategoryID = category.ID,
-                ImageUrl="image.com",
-                Price=3000
-            };
             using (var context = new ECommerceDbContext(options))
             {
+                
                 context.Database.OpenConnection();
                 context.Database.EnsureCreated();
                 context.Categories.Add(category);
                 context.SaveChanges();
+                
+            }
+            using (var context = new ECommerceDbContext(options))
+            {
+                var expected = new Product
+                {
+                    Name = "Tubular",
+                    Description = "Adidas Shoe",
+                    CategoryID = category.ID,
+                    ImageUrl = "image.com",
+                    Price = 3000
+                };
                 var sut = new ProductRepository(context);
 
                 //Act
                 sut.Create(expected);
-            }
-            using (var context = new ECommerceDbContext(options))
-            {
-                var actual = context.Products.Find(expected);
+                var actual = context.Products.Find(expected.ID);
                 //Assert
                 Assert.NotNull(actual);
                 Assert.Equal(expected.Name, actual.Name);

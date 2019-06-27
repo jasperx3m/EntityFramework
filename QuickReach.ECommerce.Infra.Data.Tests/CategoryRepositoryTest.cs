@@ -342,10 +342,16 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
         public void Update_WithValidProperty_ShouldUpdateEntity()
         {
             //Arrange
-            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
-                    .UseInMemoryDatabase($"CategoryForTesting{Guid.NewGuid()}")
-                    .Options;
+            var connectionBuilder = new SqliteConnectionStringBuilder()
+            {
+                DataSource = ":memory:"
+            };
 
+            var connection = new SqliteConnection(connectionBuilder.ConnectionString);
+
+            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
+                    .UseSqlite(connection)
+                    .Options;
 
             var expected = new Category
             {
