@@ -26,8 +26,8 @@ namespace QuickReach.ECommerce.Infra.Data.Repository
         public override void Delete(int entityId)
         {
             var entityToRemove = Retrieve(entityId);
-            var hasProduct = this.context.Products.Find(entityToRemove.ID);
-            if (hasProduct==null)
+            var hasProduct = this.context.Products.Where(p => p.CategoryID == entityToRemove.ID).Count();
+            if (hasProduct==0)
             {
                 this.context.Categories.Remove(entityToRemove);
                 this.context.SaveChanges();
