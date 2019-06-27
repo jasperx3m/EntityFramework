@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,5 +24,6 @@ namespace QuickReach.ECommerce.Domain.Models
         public string ImageUrl { get; set; }
 
         public bool IsActive { get; set; }
+        public IEnumerable<ProductCategory> ProductCategories { get; set; }
     }
 }

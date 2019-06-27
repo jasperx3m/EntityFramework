@@ -13,6 +13,8 @@ namespace QuickReach.ECommerce.Infra.Data
             modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SupplierEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryRollupEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductCategoryEntityTypeConfiguration());
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().Where(e => !e.IsOwned()).SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -29,8 +31,8 @@ namespace QuickReach.ECommerce.Infra.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //var connectionString = "Server=.;Database=QuickReachDb;Integrated Security=true;";
-            //optionsBuilder.UseSqlServer(connectionString);
+            var connectionString = "Server=.;Database=QuickReachDb;Integrated Security=true;";
+            optionsBuilder.UseSqlServer(connectionString);
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }

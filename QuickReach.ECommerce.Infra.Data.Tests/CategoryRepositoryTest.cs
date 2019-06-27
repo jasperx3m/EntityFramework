@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using QuickReach.ECommerce.Infra.Data.Repository;
+using QuickReach.ECommerce.Infra.Data.Tests.Utilities;
 
 namespace QuickReach.ECommerce.Infra.Data.Tests
 {
@@ -293,16 +294,8 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
         public void Delete_WithExistingProducts_ShouldThrowsException()
         {
             //Arrange
-            var connectionBuilder = new SqliteConnectionStringBuilder()
-            {
-                DataSource = ":memory:"
-            };
 
-            var connection = new SqliteConnection(connectionBuilder.ConnectionString);
-
-            var options = new DbContextOptionsBuilder<ECommerceDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+            var options = ConnectionOptionHelper.Sqlite();
             var category = new Category
             {
                 Name = "Shoes",
