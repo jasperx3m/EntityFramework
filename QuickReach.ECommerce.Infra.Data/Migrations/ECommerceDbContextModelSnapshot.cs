@@ -58,8 +58,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoryID");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(255);
@@ -76,8 +74,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                     b.Property<decimal>("Price");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("CategoryID");
 
                     b.ToTable("Product");
                 });
@@ -126,14 +122,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                     b.HasOne("QuickReach.ECommerce.Domain.Models.Category", "ParentCategory")
                         .WithMany("ChildCategories")
                         .HasForeignKey("ParentCategoryID")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.Product", b =>
-                {
-                    b.HasOne("QuickReach.ECommerce.Domain.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

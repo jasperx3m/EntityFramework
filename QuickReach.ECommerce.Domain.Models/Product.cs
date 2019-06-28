@@ -18,9 +18,7 @@ namespace QuickReach.ECommerce.Domain.Models
         [Required]
         public decimal Price { get; set; }
         [Required]
-        public int CategoryID { get; set; }
-        public Category Category { get; set; }
-        [Required]
+       
         public string ImageUrl { get; set; }
 
         public bool IsActive { get; set; }

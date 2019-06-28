@@ -48,7 +48,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 {
                     Name = "Tubular",
                     Description = "Adidas Shoe",
-                    CategoryID = category.ID,
+                    //CategoryID = category.ID,
                     ImageUrl = "image.com",
                     Price = 3000
                 };
@@ -119,7 +119,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             {
                 Name = "Tubular",
                 Description = "Adidas Shoe",
-                CategoryID = 12,
+                //CategoryID = 12,
                 ImageUrl = "image.com",
                 Price = 3000
             };
@@ -159,7 +159,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             {
                 Name = "Tubular",
                 Description = "Adidas Shoe",
-                Category = category,
+                //Category = category,
                 ImageUrl = "image.com",
                 Price = 3000
             };
@@ -245,7 +245,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             {
                 Name = "Tubular",
                 Description = "Adidas Shoe",
-                Category = category,
+                //Category = category,
                 ImageUrl = "image.com",
                 Price = 3000
             };
@@ -332,7 +332,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             {
                 Name = "Tubular",
                 Description = "Adidas Shoe",
-                Category = category,
+                //Category = category,
                 ImageUrl = "image.com",
                 Price = 3000
             };
@@ -348,7 +348,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                         Name = string.Format("Category {0}", i),
                         Description = string.Format("Description {0}", i),
                         Price = 3000 + i,
-                        Category = category,
+                        //Category = category,
                         ImageUrl = string.Format("Image{0}.com", i)
                     });
                 }
@@ -436,7 +436,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             {
                 Name = "Tubular",
                 Description = "Adidas Shoe",
-                Category = category,
+                //Category = category,
                 ImageUrl = "image.com",
                 Price = 3000
             };
@@ -522,7 +522,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
             {
                 Name = "Tubular",
                 Description = "Adidas Shoe",
-                Category = category,
+                //Category = category,
                 ImageUrl = "image.com",
                 Price = 3000
             };

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace QuickReach.ECommerce.Infra.Data.Migrations
 {
-    public partial class ReinitializedDatabase : Migration
+    public partial class ReinitializedDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +20,23 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Category", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 40, nullable: false),
+                    Description = table.Column<string>(maxLength: 255, nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,30 +79,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 40, nullable: false),
-                    Description = table.Column<string>(maxLength: 255, nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
-                    CategoryID = table.Column<int>(nullable: false),
-                    ImageUrl = table.Column<string>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Product_Category_CategoryID",
-                        column: x => x.CategoryID,
-                        principalTable: "Category",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductCategory",
                 columns: table => new
                 {
@@ -115,11 +108,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                 column: "ChildCategoryID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_CategoryID",
-                table: "Product",
-                column: "CategoryID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProductCategory_ProductID",
                 table: "ProductCategory",
                 column: "ProductID");
@@ -137,10 +125,10 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                 name: "Supplier");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Category");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Product");
         }
     }
 }

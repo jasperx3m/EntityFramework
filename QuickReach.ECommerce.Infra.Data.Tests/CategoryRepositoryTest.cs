@@ -314,7 +314,7 @@ namespace QuickReach.ECommerce.Infra.Data.Tests
                 Name = "Adidas Tubular",
                 Description = "Adidas Shoe",
                 ImageUrl = "adidas.com",
-                CategoryID = category.ID,
+                //CategoryID = category.ID,
                 Price = 4000,
                 IsActive = true
             };
