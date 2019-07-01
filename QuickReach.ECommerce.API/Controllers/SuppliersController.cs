@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuickReach.ECommerce.Domain;
 using QuickReach.ECommerce.Domain.Models;
+using QuickReach.ECommerce.Infra.Data;
 
 namespace QuickReach.ECommerce.API.Controllers
 {
@@ -14,10 +15,59 @@ namespace QuickReach.ECommerce.API.Controllers
     public class SuppliersController : ControllerBase
     {
         private readonly ISupplierRepository repository;
-        public SuppliersController(ISupplierRepository repository)
+        private readonly IProductRepository productRepository;
+        private readonly ECommerceDbContext context;
+        public SuppliersController(ISupplierRepository repository, IProductRepository productRepository, ECommerceDbContext context)
         {
             this.repository = repository;
+            this.productRepository = productRepository;
+            this.context = context;
         }
+        //AddProductSupplier
+        [HttpPut("{id}/products")]
+        public IActionResult AddSupplierProduct(int id, [FromBody] ProductSupplier entity)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var supplier = repository.Retrieve(id);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+            if (productRepository.Retrieve(entity.ProductID) == null)
+            {
+                return NotFound();
+            }
+            supplier.AddProduct(entity.ProductID);
+
+            repository.Update(id, supplier);
+            return Ok(supplier);
+
+        }
+        //Delete ProductSupplier
+        [HttpPut("{id}/products/{productId}")]
+        public IActionResult DeleteSupplier(int id, int productId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var supplier = repository.Retrieve(id);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+            if (productRepository.Retrieve(productId) == null)
+            {
+                return NotFound();
+            }
+            supplier.RemoveProduct(productId);
+            repository.Update(id, supplier);
+            return Ok();
+        }
+
 
         [HttpGet]
         public IActionResult Get(string search = "", int skip = 0, int count = 10)

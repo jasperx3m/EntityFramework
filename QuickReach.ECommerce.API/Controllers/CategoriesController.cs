@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QuickReach.ECommerce.API.ViewModel;
 using QuickReach.ECommerce.Domain;
 using QuickReach.ECommerce.Domain.Models;
 using QuickReach.ECommerce.Infra.Data;
@@ -17,12 +21,34 @@ namespace QuickReach.ECommerce.API.Controllers
     {
         private readonly ICategoryRepository repository;
         private readonly IProductRepository productrepo;
-        public CategoriesController(ICategoryRepository repository, IProductRepository productrepo)
+        private readonly ECommerceDbContext context;
+        public CategoriesController(ICategoryRepository repository, IProductRepository productrepo, ECommerceDbContext context)
         {
             this.repository = repository;
             this.productrepo = productrepo;
+            this.context = context;
         }
-
+        [HttpGet("{id}/products")]
+        public IActionResult GetProductsByCategory(int id)
+        {
+            var connectionString =
+            "Server=.;Database=QuickReachDb;Integrated Security=true;";
+            var connection = new SqlConnection(connectionString);
+            var sql = @"SELECT p.ID,
+                         pc.ProductID, 
+                         pc.CategoryID,
+                         p.Name, 
+                         p.Description,
+                         p.Price,
+                         p.ImageUrl
+                    FROM Product p INNER JOIN ProductCategory pc ON p.ID = pc.ProductID
+                    Where pc.CategoryID = @categoryId";
+            var categories = connection
+                .Query<SearchItemViewModel>(
+                sql, new { categoryId = id })
+                    .ToList();
+            return Ok(categories);
+        }
         [HttpGet]
         public IActionResult Get(string search ="", int skip = 0, int count = 10)
         {
@@ -72,7 +98,7 @@ namespace QuickReach.ECommerce.API.Controllers
             return Ok(category);
 
         }
-        //Delete Product
+        //Delete ProductCategory
         [HttpPut("{id}/products/{productId}")]
         public IActionResult DeleteCategoryProduct(int id, int productId)
         {

@@ -8,6 +8,7 @@ namespace QuickReach.ECommerce.Domain.Models
     [Table("Product")]
     public class Product : EntityBase
     {
+        
 
         [Required]
         [MaxLength(40)]
@@ -23,5 +24,6 @@ namespace QuickReach.ECommerce.Domain.Models
 
         public bool IsActive { get; set; }
         public IEnumerable<ProductCategory> ProductCategories { get; set; }
+        public IEnumerable<ProductSupplier> ProductSuppliers{ get; set; }
     }
 }

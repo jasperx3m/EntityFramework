@@ -11,10 +11,13 @@ using QuickReach.ECommerce.Infra.Data.Repositories;
 
 namespace QuickReach.ECommerce.API.Controllers
 {
+
+    
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
+
         private readonly IProductRepository repository;
         public ProductsController(IProductRepository repository)
         {
