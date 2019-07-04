@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuickReach.ECommerce.Infra.Data;
 
 namespace QuickReach.ECommerce.Infra.Data.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    partial class ECommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190703042034_Added Customer")]
+    partial class AddedCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,13 +46,13 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
 
                     b.Property<string>("PictureUrl");
 
-                    b.Property<int>("ProductId");
-
                     b.Property<string>("ProductName");
 
                     b.Property<int>("Quantity");
 
                     b.Property<decimal>("UnitPrice");
+
+                    b.Property<string>("productId");
 
                     b.HasKey("Id");
 
@@ -139,69 +141,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.Manufacturer", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(40);
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Manufacturers");
-                });
-
-            modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.Order", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<int>("CartId");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.OrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("OldUnitPrice");
-
-                    b.Property<int?>("OrderID");
-
-                    b.Property<string>("PictureUrl");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("ProductName");
-
-                    b.Property<int>("Quantity");
-
-                    b.Property<decimal>("UnitPrice");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderID");
-
-                    b.ToTable("OrderItem");
-                });
-
             modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.Product", b =>
                 {
                     b.Property<int>("ID")
@@ -239,19 +178,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                     b.HasIndex("ProductID");
 
                     b.ToTable("ProductCategory");
-                });
-
-            modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.ProductManufacturer", b =>
-                {
-                    b.Property<int>("ManufacturerID");
-
-                    b.Property<int>("ProductID");
-
-                    b.HasKey("ManufacturerID", "ProductID");
-
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("ProductManufacturer");
                 });
 
             modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.ProductSupplier", b =>
@@ -309,14 +235,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.OrderItem", b =>
-                {
-                    b.HasOne("QuickReach.ECommerce.Domain.Models.Order")
-                        .WithMany("Orders")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.ProductCategory", b =>
                 {
                     b.HasOne("QuickReach.ECommerce.Domain.Models.Category", "Category")
@@ -326,19 +244,6 @@ namespace QuickReach.ECommerce.Infra.Data.Migrations
 
                     b.HasOne("QuickReach.ECommerce.Domain.Models.Product", "Product")
                         .WithMany("ProductCategories")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("QuickReach.ECommerce.Domain.Models.ProductManufacturer", b =>
-                {
-                    b.HasOne("QuickReach.ECommerce.Domain.Models.Manufacturer", "Manufacturer")
-                        .WithMany("ProductManufacturers")
-                        .HasForeignKey("ManufacturerID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("QuickReach.ECommerce.Domain.Models.Product", "Product")
-                        .WithMany("ProductManufacturers")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

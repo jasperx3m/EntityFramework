@@ -7,12 +7,12 @@ using System.Text;
 
 namespace QuickReach.ECommerce.Infra.Data.EntityConfiguration
 {
-    class CartEntityTypeConfiguration : IEntityTypeConfiguration<Cart>
+    class CartItemEntityTypeConfiguration : IEntityTypeConfiguration<CartItem>
     {
-        public void Configure(EntityTypeBuilder<Cart> builder)
+        public void Configure(EntityTypeBuilder<CartItem> builder)
         {
-            builder.ToTable("Cart");
-            builder.Property(c => c.ID)
+            builder.ToTable("CartItem");
+            builder.Property(c => c.Id)
                     .IsRequired()
                     .ValueGeneratedOnAdd();
 

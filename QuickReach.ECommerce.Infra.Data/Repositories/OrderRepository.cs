@@ -7,28 +7,28 @@ using System.Text;
 
 namespace QuickReach.ECommerce.Infra.Data.Repositories
 {
-    public class CartRepository : RepositoryBase<Cart>, ICartRepository
+    public class OrderRepository : RepositoryBase<Order>, IOrderRepository
     {
 
-        public CartRepository(ECommerceDbContext context) : base(context) //calls constructor of repositorybase
+        public OrderRepository(ECommerceDbContext context) : base(context) //calls constructor of repositorybase
         {
 
 
         }
-        public override Cart Retrieve(int entityId)
+        public override Order Retrieve(int entityId)
         {
-            var entity = this.context.Carts
+            var entity = this.context.Orders
                         .Where(c => c.ID == entityId)
                         .FirstOrDefault();
             return entity;
 
 
         }
-        public IEnumerable<Cart> Retrieve(string search = "", int skip = 0, int count = 10)
+        public IEnumerable<Order> Retrieve(string search = "", int skip = 0, int count = 10)
         {
-            var result = this.context.Carts
-                .Where(c => c.ID.ToString().Contains(search)||
-                c.Items.ToString()
+            var result = this.context.Orders
+                .Where(c => c.ID.ToString().Contains(search) ||
+                c.Orders.ToString()
                 .Contains(search))
                 .Skip(skip)
                 .Take(count)

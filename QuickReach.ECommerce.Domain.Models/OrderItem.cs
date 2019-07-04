@@ -5,7 +5,7 @@ using System.Text;
 
 namespace QuickReach.ECommerce.Domain.Models
 {
-    public class CartItem : IValidatableObject
+    public class OrderItem : IValidatableObject
     {
         public int Id { get; set; }
         public int ProductId { get; set; }

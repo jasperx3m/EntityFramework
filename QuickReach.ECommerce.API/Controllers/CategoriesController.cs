@@ -21,12 +21,11 @@ namespace QuickReach.ECommerce.API.Controllers
     {
         private readonly ICategoryRepository repository;
         private readonly IProductRepository productrepo;
-        private readonly ECommerceDbContext context;
-        public CategoriesController(ICategoryRepository repository, IProductRepository productrepo, ECommerceDbContext context)
+
+        public CategoriesController(ICategoryRepository repository, IProductRepository productrepo)
         {
             this.repository = repository;
             this.productrepo = productrepo;
-            this.context = context;
         }
         [HttpGet("{id}/products")]
         public IActionResult GetProductsByCategory(int id)
